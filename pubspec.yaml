@@ -26,12 +26,13 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   http: ^0.13.3
-  geolocation: ^1.1.2
-  geolocator: ^7.6.2
+  json_annotation: ^4.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.0.0
+  json_serializable: ^4.1.4
 
 flutter:
   uses-material-design: true
@@ -57,6 +58,15 @@ flutter:
     - family: Grechen Fueman
       fonts:
         - asset: lib/fonts/Grechen_Fuemen/GrechenFuemen-Regular.ttf
+    - family: SF Pro Display
+      fonts:
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Bold.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Light.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Medium.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Regular.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Semibold.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Thin.ttf
+        - asset: lib/fonts/SF_Pro_Display/SFProDisplay-Ultralight.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

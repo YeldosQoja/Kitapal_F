@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
 
 abstract class AppColors {
   static final backgroundColor = Color.fromRGBO(255, 255, 255, 1);
@@ -12,7 +11,7 @@ abstract class AppColors {
   static final red = Color.fromRGBO(239, 37, 37, 1);
 }
 
-final String fontFamily = Platform.isAndroid ? "Manrope" : 'SF Pro Display';
+final String fontFamily = 'SF Pro Display';
 
 abstract class TextStyles {
   static final h1 = TextStyle(
@@ -58,9 +57,12 @@ abstract class TextStyles {
 }
 
 abstract class AppAssets {
-  static final homeHeaderLogo =
-      Image(image: AssetImage('lib/assets/images/homeHeaderLogo.png'));
-  static final menuIcon = Image(image: AssetImage('lib/assets/icons/menu.png'));
-  static final searchIcon =
-      Image(image: AssetImage('lib/assets/icons/search.png'));
+  static final String homeHeaderLogo = 'lib/assets/icons/headerlogo.svg';
+  static final String menuIcon = 'lib/assets/icons/menu.svg';
+  static final String searchIcon = 'lib/assets/icons/search.svg';
+  static final String main = 'lib/assets/icons/main.svg';
+  static final String catalog = 'lib/assets/icons/catalog.svg';
+  static final String myBooks = 'lib/assets/icons/mybooks.svg';
+  static final String basket = 'lib/assets/icons/basket.svg';
+  static final String profile = 'lib/assets/icons/profile.svg';
 }

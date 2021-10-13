@@ -1,15 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kitapal/constants/constants.dart';
-import 'package:kitapal/widgets/header.dart';
+import 'package:kitapal/json_serialization/main_decoding.dart';
 import 'package:http/http.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({Key? key, required this.name}) : super(key: key);
-
-  final String name;
-
-  final String surname = "sdnfjinsid";
+  const MainPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -25,10 +23,13 @@ class _MainPageState extends State<MainPage> {
 
     Map<String, dynamic> decodedResponse = jsonDecode(response.body);
 
-    print(decodedResponse['banner'].length);
+    var main = Main.fromJson(decodedResponse);
+
+    print(main.banner[0].book_image);
 
     setState(() {
-      data = decodedResponse;
+      data = main;
+      print(data);
     });
   }
 
@@ -41,69 +42,115 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: renderAppBar(),
-      body: data == null
-          ? Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-              ),
-            )
-          : Slider(data: data),
-    );
-  }
-
-  Header renderAppBar() {
-    return Header(
-      leading: GestureDetector(
-          onTap: () {
-            print('You pressed menu!');
-          },
-          child: AppAssets.menuIcon),
-      title: AppAssets.homeHeaderLogo,
-      ending: GestureDetector(
-          onTap: () {
-            print('You pressed search!');
-          },
-          child: AppAssets.searchIcon),
-      headerType: 3,
-    );
+    return data == null
+        ? Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ),
+          )
+        : Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  height: 180.0,
+                  child: Slider(data: data.banner),
+                ),
+              ],
+            ),
+          );
   }
 }
 
-class Slider extends StatelessWidget {
+class Slider extends StatefulWidget {
   const Slider({
     Key? key,
     required this.data,
   }) : super(key: key);
 
-  final Map data;
+  final data;
 
   @override
+  _SliderState createState() => _SliderState();
+}
+
+class _SliderState extends State<Slider> {
+  @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: data['banner'].length,
-      itemBuilder: (BuildContext context, int index) {
-        return Image(
-          width: double.infinity,
-          height: 170.0,
-          image: NetworkImage(data['banner'][index]['slider_image']),
-        );
-      },
-      scrollDirection: Axis.vertical,
+    return Stack(
+      children: [
+        ListView.builder(
+          itemCount: widget.data.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Stack(
+              children: [
+                Image(
+                  width: MediaQuery.of(context).size.width,
+                  height: double.infinity,
+                  image: NetworkImage(widget.data[index].slider_image),
+                  fit: BoxFit.cover,
+                ),
+                Opacity(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: double.infinity,
+                    color: AppColors.primary,
+                  ),
+                  opacity: 0.83,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        widget.data[index].slider_header,
+                        style: TextStyles.h2,
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        widget.data[index].slider_text,
+                        style: TextStyle(
+                          color: AppColors.backgroundColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 17,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      OutlinedButton(
+                        onPressed: () {},
+                        child: Text(
+                          widget.data[index].button_text,
+                          style: TextStyle(
+                            color: AppColors.backgroundColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          ),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: AppColors.backgroundColor),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          },
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+        ),
+        ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return Container();
+          },
+        ),
+      ],
     );
   }
 }
-
-
-// ListView.builder(
-//       itemBuilder: (BuildContext context, int index) {
-//         return Image(
-//           width: double.infinity,
-//           height: 170.0,
-//           image: NetworkImage(data['banner'][index]['slider_image']),
-//         );
-//       },
-//       itemCount: data['banner'].length,
-//       scrollDirection: Axis.horizontal,
-//     );
